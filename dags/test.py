@@ -21,7 +21,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 # Create a new table for the stock price data
-mycursor.execute("CREATE TABLE IF NOT EXISTS korea_top1000_stocks (date DATETIME, rank INT, company VARCHAR(255), price INT)")
+mycursor.execute("CREATE TABLE IF NOT EXISTS korea_top1000_stocks (id INT primary key auto incremenet, rank INT, company VARCHAR(255), price INT, create_date DATETIME)")
 
 for row in rows:
     cols = row.find_all('td')
@@ -30,9 +30,8 @@ for row in rows:
         company = cols[1].text.strip()
         price = cols[2].text.strip().replace(",", "")
         date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        stock_list.append(company)
 
-        sql = "INSERT INTO korea_top1000_stocks (date, rank, company, price) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO korea_top1000_stocks (create_date, rank, company, price) VALUES (%s, %s, %s, %s)"
         val = (date, rank, company, price)
 
         mycursor.execute(sql, val)
